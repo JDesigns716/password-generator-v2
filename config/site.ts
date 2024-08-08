@@ -6,6 +6,6 @@ export const SiteConfig = {
   links: {
     github: "https://github.com/JDesigns716",
     x: "https://x.com/Jay716_",
-    project: "",
+    project: "https://github.com/JDesigns716/password-generator-v2",
   },
 };
