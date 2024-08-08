@@ -40,6 +40,7 @@ const fieldLabels = {
   uppercaseLetters: "Uppercase Letters",
   numbers: "Numbers",
 };
+type Field = keyof typeof fieldLabels;
 
 const PasswordForm = () => {
   const [password, setPassword] = useState("");
@@ -62,7 +63,11 @@ const PasswordForm = () => {
     });
   };
 
-  const handleFieldChange = (field: string, value: any) => {
+  const handleFieldChange = (
+    field: Field,
+    value: any,
+    fieldOnChange: Function
+  ) => {
     if (field === "passwordLength") {
       if (value < 10) {
         showToastError("Password must be at least 10 characters.");
@@ -78,10 +83,14 @@ const PasswordForm = () => {
         setInvalidFields((prev) => prev.filter((f) => f !== field));
       } else {
         setInvalidFields((prev) => [...prev, field]);
-        showToastError(`Please select ${fieldLabels[field]} option.`);
+        if (field in fieldLabels) {
+          showToastError(`Please select ${fieldLabels[field]} option.`);
+        } else {
+          showToastError("Please select a valid option.");
+        }
       }
     }
-    form.setValue(field as keyof FormData, value);
+    fieldOnChange(value);
   };
 
   const onSubmit = async (data: FormData) => {
@@ -205,7 +214,8 @@ const PasswordForm = () => {
                       onChange={(e) =>
                         handleFieldChange(
                           "passwordLength",
-                          parseInt(e.target.value, 10)
+                          parseInt(e.target.value, 10),
+                          field.onChange
                         )
                       }
                     />
@@ -235,7 +245,11 @@ const PasswordForm = () => {
                       id="lowercase"
                       checked={field.value}
                       onCheckedChange={(value) =>
-                        handleFieldChange("lowercaseLetters", value)
+                        handleFieldChange(
+                          "lowercaseLetters",
+                          value,
+                          field.onChange
+                        )
                       }
                     />
                   </FormControl>
@@ -263,7 +277,11 @@ const PasswordForm = () => {
                       id="uppercase"
                       checked={field.value}
                       onCheckedChange={(value) =>
-                        handleFieldChange("uppercaseLetters", value)
+                        handleFieldChange(
+                          "uppercaseLetters",
+                          value,
+                          field.onChange
+                        )
                       }
                     />
                   </FormControl>
@@ -289,7 +307,7 @@ const PasswordForm = () => {
                       id="number"
                       checked={field.value}
                       onCheckedChange={(value) =>
-                        handleFieldChange("numbers", value)
+                        handleFieldChange("numbers", value, field.onChange)
                       }
                     />
                   </FormControl>

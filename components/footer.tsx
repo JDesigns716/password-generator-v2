@@ -12,11 +12,10 @@ const Footer = () => {
       </p>
       <p className="text-balance  text-center text-sm leading-loose text-muted-foreground md:text-left">
         The source code can is available on{" "}
-        <Link href={SiteConfig.links.project}>GitHub.</Link>
-      </p>
-      <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
+        <Link href={SiteConfig.links.project}>GitHub. </Link>
         &copy; {new Date().getFullYear()} All Rights Reserved
       </p>
+      <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left"></p>
     </footer>
   );
 };
